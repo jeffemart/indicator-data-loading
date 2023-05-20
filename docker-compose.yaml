@@ -16,6 +16,8 @@ services:
 
   python:
     image: python:latest
+    ports:
+      - 8000:8000
     volumes:
       - ./app:/app
       - ./app/requirements.txt:/app/requirements.txt

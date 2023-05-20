@@ -1,4 +1,4 @@
-.env
-/log/
+*.env
+*.log
 __pycache__/
-dump.sql
+*.sql
