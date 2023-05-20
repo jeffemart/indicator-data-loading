@@ -1,0 +1,44 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    env_file:
+      - .env  # Caminho relativo para chegar à raiz do projeto
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    container_name: mysql
+
+  python:
+    build:
+      context: .  # Caminho relativo para chegar à pasta do código Python
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./app:/app  # Caminho relativo para chegar à pasta do código Python
+    restart: always
+    container_name: python
+
+  zabbix:
+    image: zabbix/zabbix-server-mysql:latest
+    ports:
+      - 80:80
+    env_file:
+      - .env  # Caminho relativo para chegar à raiz do projeto
+    depends_on:
+      - mysql
+    restart: always
+    container_name: zabbix
+
+  metabase:
+    image: metabase/metabase:latest
+    ports:
+      - 3000:3000
+    env_file:
+      - .env  # Caminho relativo para chegar à raiz do projeto
+    depends_on:
+      - mysql
+    restart: always
+    container_name: meatabase
+
+volumes:
+  mysql_data:

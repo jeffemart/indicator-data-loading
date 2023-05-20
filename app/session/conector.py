@@ -14,7 +14,7 @@ class Connection:
         load_dotenv()
 
         # Acessa as variáveis de ambiente carregadas
-        self.mysql_host = os.getenv("MYSQL_HOST")
+        self.mysql_host = os.getenv("DB_HOST")
         self.mysql_user = os.getenv("MYSQL_USER")
         self.mysql_password = os.getenv("MYSQL_PASSWORD")
         self.mysql_database = os.getenv("MYSQL_DATABASE")
@@ -30,11 +30,11 @@ class Connection:
             secret_key = "my_secret_key"  # Chave secreta para assinar o token
             token = jwt.encode(payload, secret_key, algorithm="HS256")
 
-            logging.info("Token: " + token)
+            logging.info("APP_KEY: " + token)
 
             # Salvar o token no arquivo .env
             load_dotenv()
-            set_key('.env', 'TOKEN', token)
+            set_key('.env', 'APP_KEY', token)
 
         except mysql.connector.Error as error:
             if error.errno == errorcode.ER_BAD_DB_ERROR:

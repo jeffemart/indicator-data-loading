@@ -1,17 +1,12 @@
-# Define a imagem base
-FROM python:3.9
+# Imagem base do Python
+FROM python:latest
 
-# Define o diretório de trabalho dentro do contêiner
+# Copiar os arquivos do aplicativo para o contêiner
+COPY ./app/ /app/
+
+# Instalar as dependências do Python
 WORKDIR /app
+RUN pip install -r requirements.txt
 
-# Copia o arquivo requirements.txt para o contêiner
-COPY requirements.txt .
-
-# Instala as dependências do Python
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copia o restante do código para o contêiner
-COPY . .
-
-# Define o comando padrão a ser executado quando o contêiner for iniciado
+# Executar o script Python
 CMD [ "python", "main.py" ]
