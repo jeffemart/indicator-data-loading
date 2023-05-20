@@ -1,4 +1,5 @@
 *.env
 *.log
-__pycache__/
 *.sql
+*requirements.txt
+*__pycache__/
