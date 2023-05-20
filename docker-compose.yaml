@@ -2,43 +2,120 @@ version: '3'
 services:
   mysql:
     image: mysql:latest
+    networks:
+      - vpcstack
+    ports:
+      - 3036:3036
     env_file:
-      - .env  # Caminho relativo para chegar à raiz do projeto
+      - .env
     volumes:
       - mysql_data:/var/lib/mysql
-    restart: always
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    restart: unless-stopped
     container_name: mysql
 
   python:
-    build:
-      context: .  # Caminho relativo para chegar à pasta do código Python
-      dockerfile: docker/Dockerfile
+    image: python:latest
     volumes:
-      - ./app:/app  # Caminho relativo para chegar à pasta do código Python
-    restart: always
+      - ./app:/app
+      - ./app/requirements.txt:/app/requirements.txt
+    working_dir: /app
+    command: sh -c "python -m venv /venv && /venv/bin/pip install --upgrade pip && /venv/bin/pip install -r requirements.txt && /venv/bin/python main.py"
+    restart: unless-stopped
     container_name: python
-
-  zabbix:
-    image: zabbix/zabbix-server-mysql:latest
-    ports:
-      - 80:80
-    env_file:
-      - .env  # Caminho relativo para chegar à raiz do projeto
-    depends_on:
-      - mysql
-    restart: always
-    container_name: zabbix
-
-  metabase:
-    image: metabase/metabase:latest
-    ports:
-      - 3000:3000
-    env_file:
-      - .env  # Caminho relativo para chegar à raiz do projeto
-    depends_on:
-      - mysql
-    restart: always
-    container_name: meatabase
 
 volumes:
   mysql_data:
+
+networks:
+  vpcstack:
+
+    # zabbix-server:
+    #   container_name: zabbix-server
+    #   image: zabbix/zabbix-server-mysql:ubuntu-5.0.1
+    #   networks:
+    #     - vpcstack
+    #   restart: always
+    #   ports:
+    #     - '10051:10051'
+    #   volumes:
+    #     - './zabbix/alertscripts:/usr/lib/zabbix/alertscripts'
+    #   environment:
+    #     - .env
+    #   depends_on:
+    #     - mysql
+
+    # zabbix-frontend:
+    #   container_name: zabbix-frontend
+    #   image: zabbix/zabbix-web-apache-mysql:ubuntu-5.0.1
+    #   networks:
+    #     - vpcstack
+    #   restart: always
+    #   ports:
+    #     - '8010:8080'
+    #     - '443:8443'
+    #   environment:
+    #     - .env
+    #   depends_on:
+    #     - mysql
+
+    # zabbix-agent:
+    #   image: zabbix/zabbix-agent:ubuntu-5.0-latest
+    #   container_name: zabbix_agent
+    #   networks:
+    #     - vpcstack
+    #   ports:
+    #     - "10050:10050"
+    #   volumes:
+    #     - /etc/localtime:/etc/localtime:ro
+    #     - ./zbx_env/etc/zabbix/zabbix_agentd.d:/etc/zabbix/zabbix_agentd.d:rw
+    #     - ./zbx_env/var/lib/zabbix/modules:/var/lib/zabbix/modules:rw
+    #     - ./zbx_env/var/lib/zabbix/enc:/var/lib/zabbix/enc:rw
+    #     - ./zbx_env/var/lib/zabbix/ssh_keys:/var/lib/zabbix/ssh_keys:rw
+    #   labels:
+    #     com.zabbix.description: "Zabbix agent"
+    #     com.zabbix.company: "Zabbix LLC"
+    #     com.zabbix.component: "zabbix-agentd"
+    #     com.zabbix.os: "ubuntu"
+
+    # grafana:
+    #   image: grafana/grafana:latest
+    #   container_name: grafana
+    #   user: 'root'
+    #   environment:
+    #     - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app,raintank-worldping-app
+    #   volumes:
+    #     - grafana-config:/etc/grafana:rw
+    #     - grafana-data:/var/lib/grafana:rw
+    #     - grafana-home:/usr/share/grafana:rw
+    #   ports:
+    #     - '8020:3000'
+    #   depends_on:
+    #     - zabbix-server
+    #   networks:
+    #     - vpcstack
+
+    # redis:
+    #   image: redis:latest
+    #   container_name: redis
+    #   ports:
+    #     - 6379:6379
+    #   networks:
+    #     - vpcstack
+
+    # metabase:
+    #   image: metabase/metabase:latest
+    #   networks:
+    #     - vpcstack
+    #   ports:
+    #     - 3000:3000
+    #   env_file:
+    #     - .env
+    #   depends_on:
+    #     - mysql
+    #   restart: unless-stopped
+    #   container_name: meatabase
+
+    # grafana-config:
+    # grafana-data:
+    # grafana-home:
