@@ -7,17 +7,22 @@ from dotenv import load_dotenv
 
 
 class Login_in:
-    def __init__(self, url=os.getenv("ROUTE_DESK_AUTH")):
+    def __init__(self):
         self.__token = ''
-        self.url = url
+        self.url = os.getenv('ROUTE_DESK_AUTH')
 
     def Login(self) -> str:
         # <!--access credentials to authenticate
         load_dotenv()
-        header = {'Authorization': os.getenv("AUTHORIZATION"),
+        header = {'Authorization': os.getenv('AUTHORIZATION'),
                   'content-type': 'application/json'}
         params = json.dumps(
-            {'PublicKey': os.getenv("PUBLIC_KEY")})
+            {'PublicKey': os.getenv('PUBLIC_KEY')})
+
+        # header = {'Authorization': os.getenv("AUTHORIZATION"),
+        #           'content-type': 'application/json'}
+        # params = json.dumps(
+        #     {'PublicKey': os.getenv("PUBLIC_KEY")})
 
         # <!--request to authenticate
         response = requests.post(self.url, headers=header, data=params)

@@ -15,7 +15,7 @@ class Data:
         print(self.__token)
         load_dotenv()
         
-        self.url_data = os.getenv("ROUTE_DOWNLOAD")
+        self.url_data = os.getenv('ROUTE_DOWNLOAD')
         self.header = {'Authorization': f'{self.__token}'}
         self.cod = cod
 
@@ -27,7 +27,7 @@ class Data:
         logging.debug(response)
         # <!--condition to check if response returned
         if response.status_code == 200:
-            with open(f'../arquivos/{self.cod}.json', 'w', encoding='utf8') as log:
+            with open(f'./app/files/{self.cod}.json', 'w', encoding='utf8') as log:
                 json.dump(response.json(), log,
                             indent=4, ensure_ascii=False)
         else:

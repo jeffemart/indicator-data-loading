@@ -1,9 +1,7 @@
 import os
-import jwt
 import logging
 # ...
 from libs import Chamados
-from session import conector
 from dotenv import load_dotenv
 
 # Configuração básica do logger
