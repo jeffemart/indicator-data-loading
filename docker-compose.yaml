@@ -1,0 +1,136 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.2
+    ports:
+      - 3036:3036
+    env_file:
+      - .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    restart: unless-stopped
+
+  python:
+    container_name: python
+    image: python:latest
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.3
+    ports:
+      - 8000:8000
+    volumes:
+      - ./app:/app
+      - ./app/requirements.txt:/app/requirements.txt
+    working_dir: /app
+    command: sh -c "python -m venv /venv && /venv/bin/pip install --upgrade pip && /venv/bin/pip install -r requirements.txt && /venv/bin/python main.py"
+    restart: unless-stopped
+
+  zabbix-server:
+    container_name: zabbix-server
+    image: zabbix/zabbix-server-mysql:ubuntu-5.0.1
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.4
+    restart: unless-stopped
+    ports:
+      - '10051:10051'
+    volumes:
+      - './zabbix/alertscripts:/usr/lib/zabbix/alertscripts'
+    environment:
+      - .env
+    depends_on:
+      - mysql
+
+  zabbix-frontend:
+    container_name: zabbix-frontend
+    image: zabbix/zabbix-web-apache-mysql:ubuntu-5.0.1
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.5
+    restart: unless-stopped
+    ports:
+      - '8010:8080'
+      - '443:8443'
+    environment:
+      - .env
+    depends_on:
+      - mysql
+
+  zabbix-agent:
+    image: zabbix/zabbix-agent:ubuntu-5.0-latest
+    container_name: zabbix_agent
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.6
+    ports:
+      - "10050:10050"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./zbx_env/etc/zabbix/zabbix_agentd.d:/etc/zabbix/zabbix_agentd.d:rw
+      - ./zbx_env/var/lib/zabbix/modules:/var/lib/zabbix/modules:rw
+      - ./zbx_env/var/lib/zabbix/enc:/var/lib/zabbix/enc:rw
+      - ./zbx_env/var/lib/zabbix/ssh_keys:/var/lib/zabbix/ssh_keys:rw
+    labels:
+      com.zabbix.description: "Zabbix agent"
+      com.zabbix.company: "Zabbix LLC"
+      com.zabbix.component: "zabbix-agentd"
+      com.zabbix.os: "ubuntu"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: 'root'
+    environment:
+      - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app,raintank-worldping-app
+    volumes:
+      - grafana-config:/etc/grafana:rw
+      - grafana-data:/var/lib/grafana:rw
+      - grafana-home:/usr/share/grafana:rw
+    ports:
+      - '8020:3000'
+    depends_on:
+      - zabbix-server
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.7
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.8
+
+  metabase:
+    image: metabase/metabase:latest
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.9
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    container_name: meatabase
+
+volumes:
+  mysql_data:
+  grafana-config:
+  grafana-data:
+  grafana-home:
+
+networks:
+  breaker:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
