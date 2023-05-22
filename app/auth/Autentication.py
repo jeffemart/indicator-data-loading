@@ -1,21 +1,23 @@
 import requests
 import logging
-import json 
+import json
+import os
 # ...
 from dotenv import load_dotenv
 
 
 class Login_in:
-    def __init__(self, url='https://api.desk.ms/Login/autenticar'):
+    def __init__(self, url=os.getenv("ROUTE_DESK_AUTH")):
         self.__token = ''
         self.url = url
 
     def Login(self) -> str:
         # <!--access credentials to authenticate
-        header = {'Authorization': 'fe0d0bda1e7ada6f755145a094ebdbfd50c3ab9c',
+        load_dotenv()
+        header = {'Authorization': os.getenv("AUTHORIZATION"),
                   'content-type': 'application/json'}
         params = json.dumps(
-            {'PublicKey': 'd8913f9062094f139a6f949f06f1afacf282a509'})
+            {'PublicKey': os.getenv("PUBLIC_KEY")})
 
         # <!--request to authenticate
         response = requests.post(self.url, headers=header, data=params)

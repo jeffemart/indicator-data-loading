@@ -1,21 +1,20 @@
 import json
 import logging
 import requests
-import Download
 # ...
+from libs import Download
 from session import conector
 from datetime import datetime
-from auth import Autentication
 
 
-class Sla:
+class Calls:
     def __init__(self) -> None:
         # <!--constructor to get token and report download
         info = Download.Data('142')
         info.Report()
         
-        with open('../arquivos/142.json', 'r', encoding='utf_8') as sla:
-                    self.relatorio = json.load(sla)
+        with open('../arquivos/142.json', 'r', encoding='utf_8') as desk:
+                    self.relatorio = json.load(desk)
     
     def Priority(self):
         # Função para inserir ou atualizar os dados no banco de dados

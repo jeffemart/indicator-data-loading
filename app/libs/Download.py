@@ -1,17 +1,21 @@
-from auth import Autentication
 import requests
 import logging
 import json
+import os
+# ...
+from auth import Autentication
+from dotenv import load_dotenv
 
 
 class Data:
     def __init__(self, cod=['']):
-        call_class = Autentication.login_in()
-        call_class.login()
-        self.__token = call_class.get_token()
+        call_class = Autentication.Login_in()
+        call_class.Login()
+        self.__token = call_class.Get_token()
         print(self.__token)
+        load_dotenv()
         
-        self.url_data = 'https://api.desk.ms/Relatorios/imprimir'
+        self.url_data = os.getenv("ROUTE_DOWNLOAD")
         self.header = {'Authorization': f'{self.__token}'}
         self.cod = cod
 
