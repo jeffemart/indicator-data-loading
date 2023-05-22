@@ -1,9 +1,11 @@
 version: '3'
 services:
   mysql:
+    container_name: mysql
     image: mysql:latest
     networks:
-      - vpcstack
+      breaker:
+        ipv4_address: 172.30.0.2
     ports:
       - 3036:3036
     env_file:
@@ -12,10 +14,13 @@ services:
       - mysql_data:/var/lib/mysql
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
     restart: unless-stopped
-    container_name: mysql
 
   python:
+    container_name: python
     image: python:latest
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.3
     ports:
       - 8000:8000
     volumes:
@@ -24,14 +29,14 @@ services:
     working_dir: /app
     command: sh -c "python -m venv /venv && /venv/bin/pip install --upgrade pip && /venv/bin/pip install -r requirements.txt && /venv/bin/python main.py"
     restart: unless-stopped
-    container_name: python
 
   zabbix-server:
     container_name: zabbix-server
     image: zabbix/zabbix-server-mysql:ubuntu-5.0.1
     networks:
-      - vpcstack
-    restart: always
+      breaker:
+        ipv4_address: 172.30.0.4
+    restart: unless-stopped
     ports:
       - '10051:10051'
     volumes:
@@ -45,8 +50,9 @@ services:
     container_name: zabbix-frontend
     image: zabbix/zabbix-web-apache-mysql:ubuntu-5.0.1
     networks:
-      - vpcstack
-    restart: always
+      breaker:
+        ipv4_address: 172.30.0.5
+    restart: unless-stopped
     ports:
       - '8010:8080'
       - '443:8443'
@@ -59,7 +65,8 @@ services:
     image: zabbix/zabbix-agent:ubuntu-5.0-latest
     container_name: zabbix_agent
     networks:
-      - vpcstack
+      breaker:
+        ipv4_address: 172.30.0.6
     ports:
       - "10050:10050"
     volumes:
@@ -89,7 +96,8 @@ services:
     depends_on:
       - zabbix-server
     networks:
-      - vpcstack
+      breaker:
+        ipv4_address: 172.30.0.7
 
   redis:
     image: redis:latest
@@ -97,12 +105,14 @@ services:
     ports:
       - 6379:6379
     networks:
-      - vpcstack
+      breaker:
+        ipv4_address: 172.30.0.8
 
   metabase:
     image: metabase/metabase:latest
     networks:
-      - vpcstack
+      breaker:
+        ipv4_address: 172.30.0.9
     ports:
       - 3000:3000
     env_file:
@@ -119,4 +129,8 @@ volumes:
   grafana-home:
 
 networks:
-  vpcstack:
+  breaker:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
