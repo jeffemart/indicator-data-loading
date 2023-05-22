@@ -1,10 +1,11 @@
-import mysql.connector
-import logging
-import jwt
 import os
-from mysql.connector import errorcode
-from dotenv import load_dotenv
+import jwt
+import logging
+import mysql.connector
+# ...
 from dotenv import set_key
+from dotenv import load_dotenv
+from mysql.connector import errorcode
 
 
 class Connection:

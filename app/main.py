@@ -1,7 +1,7 @@
-import mysql.connector
-from mysql.connector import errorcode
 import os
+import jwt
 import logging
+# ...
 from session import conector
 from dotenv import load_dotenv
 
