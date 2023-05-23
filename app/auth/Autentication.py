@@ -19,11 +19,6 @@ class Login_in:
         params = json.dumps(
             {'PublicKey': os.getenv('PUBLIC_KEY')})
 
-        # header = {'Authorization': os.getenv("AUTHORIZATION"),
-        #           'content-type': 'application/json'}
-        # params = json.dumps(
-        #     {'PublicKey': os.getenv("PUBLIC_KEY")})
-
         # <!--request to authenticate
         response = requests.post(self.url, headers=header, data=params)
         logging.debug(response)
