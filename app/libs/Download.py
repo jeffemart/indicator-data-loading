@@ -3,15 +3,15 @@ import logging
 import json
 import os
 # ...
-from auth import Autentication
+from auth import autentication
 from dotenv import load_dotenv
 
 
-class Data:
+class data:
     def __init__(self, cod=['']):
-        call_class = Autentication.Login_in()
-        call_class.Login()
-        self.__token = call_class.Get_token()
+        call_class = autentication.login_in()
+        call_class.login()
+        self.__token = call_class.get_token()
         print(self.__token)
         load_dotenv()
         
@@ -19,7 +19,7 @@ class Data:
         self.header = {'Authorization': f'{self.__token}'}
         self.cod = cod
 
-    def Report(self):
+    def report(self):
         # <!--access credentials to authenticate
         params = json.dumps({'Chave': f'{self.cod}'})
         response = requests.post(

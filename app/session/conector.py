@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from mysql.connector import errorcode
 
 
-class Database:
+class database:
     def __init__(self):
         self.con = None
         # Carrega as variáveis de ambiente do arquivo .env
@@ -20,7 +20,7 @@ class Database:
         self.mysql_password = os.getenv("MYSQL_PASSWORD")
         self.mysql_database = os.getenv("MYSQL_DATABASE")
 
-    def Mysql(self):
+    def mysql(self):
         try:
             self.con = mysql.connector.connect(
                 host=self.mysql_host, user=self.mysql_user, password=self.mysql_password, database=self.mysql_database)

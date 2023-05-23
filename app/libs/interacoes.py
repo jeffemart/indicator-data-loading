@@ -6,16 +6,16 @@ from session import conector
 from datetime import datetime
 
 
-class callchamados:
+class callinteracoes:
     def __init__(self) -> None:
         # <!--constructor to get token and report download
-        info = download.data('140')
+        info = download.data('141')
         info.report()
         
-        with open('./files/140.json', 'r', encoding='utf_8') as desk:
+        with open('./files/141.json', 'r', encoding='utf_8') as desk:
                     self.relatorio = json.load(desk)
     
-    def priority(self):
+    def interacoes(self):
         # Função para inserir ou atualizar os dados no banco de dados
         # ...
         conc = conector.database()
