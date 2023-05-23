@@ -27,8 +27,8 @@ class Data:
         logging.debug(response)
         # <!--condition to check if response returned
         if response.status_code == 200:
-            with open(f'./app/files/{self.cod}.json', 'w', encoding='utf8') as log:
-                json.dump(response.json(), log,
+            with open(f'./files/{self.cod}.json', 'w', encoding='utf8') as desk:
+                json.dump(response.json(), desk,
                             indent=4, ensure_ascii=False)
         else:
             logging.warning(

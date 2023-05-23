@@ -14,9 +14,5 @@ logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='a',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 # ...
-# connection = conector.Connection()
-# con = connection.connect()
-
-
 chamados = Chamados.Calls()
 chamados.Priority()

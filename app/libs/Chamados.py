@@ -1,4 +1,5 @@
 import json
+import mysql.connector
 # ...
 from libs import Download
 from session import Conector
@@ -8,10 +9,10 @@ from datetime import datetime
 class Calls:
     def __init__(self) -> None:
         # <!--constructor to get token and report download
-        info = Download.Data('142')
+        info = Download.Data('140')
         info.Report()
         
-        with open('./app/files/142.json', 'r', encoding='utf_8') as desk:
+        with open('./files/140.json', 'r', encoding='utf_8') as desk:
                     self.relatorio = json.load(desk)
     
     def Priority(self):
