@@ -1,13 +1,14 @@
-import mysql.connector
-import logging
-import jwt
 import os
-from mysql.connector import errorcode
-from dotenv import load_dotenv
+import jwt
+import logging
+import mysql.connector
+# ...
 from dotenv import set_key
+from dotenv import load_dotenv
+from mysql.connector import errorcode
 
 
-class Connection:
+class Database:
     def __init__(self):
         self.con = None
         # Carrega as variáveis de ambiente do arquivo .env
@@ -19,7 +20,7 @@ class Connection:
         self.mysql_password = os.getenv("MYSQL_PASSWORD")
         self.mysql_database = os.getenv("MYSQL_DATABASE")
 
-    def connect(self):
+    def Mysql(self):
         try:
             self.con = mysql.connector.connect(
                 host=self.mysql_host, user=self.mysql_user, password=self.mysql_password, database=self.mysql_database)
