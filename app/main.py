@@ -19,8 +19,8 @@ logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='a',
 
 # ...
 
-deskchamados = chamados.callchamados()
-deskchamados.priority()
+# deskchamados = chamados.callchamados()
+# deskchamados.priority()
 
 deskinteracoes = interacoes.callinteracoes()
 deskinteracoes.interacoes()

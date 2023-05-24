@@ -24,18 +24,12 @@ class callinteracoes:
 
         # Percorre os dados do JSON
         for item in self.relatorio['root']:
-            # Formata a data de finalização (considerando '00-00-0000' como valor nulo)
-            if item['DataCriacao'] == '00-00-0000':
+            # Formata a data de Acao (considerando '00-00-0000' como valor nulo)
+            if item['DataCriacaoAcao'] == '00-00-0000':
                 data_criacao_convertida = None
             else:
                 data_criacao_convertida = datetime.strptime(
-                    item['DataCriacao'], '%d-%m-%Y').strftime('%Y-%m-%d')
-
-            if item['DataFinalizacao'] == '00-00-0000':
-                data_finalizacao_convertida = None
-            else:
-                data_finalizacao_convertida = datetime.strptime(
-                    item['DataFinalizacao'], '%d-%m-%Y').strftime('%Y-%m-%d')
+                    item['DataCriacaoAcao'], '%d-%m-%Y').strftime('%Y-%m-%d')
 
             query = "SELECT * FROM chamados WHERE CodInterno = %s"
             cu.execute(query, (item['CodInterno'],))
@@ -47,15 +41,12 @@ class callinteracoes:
                 query = "UPDATE chamados SET CodChamado = %s, DataCriacao = %s, DataFinalizacao = %s, ChaveAutoCategoria = %s, HoraFinalizacao = %s, FirstCall = %s, ChaveOperador = %s, ChaveUsuario = %s, ChaveSla = %s WHERE CodInterno = %s"
                 cu.execute(query, (
                     item.get('CodChamado'),
+                    item.get('DescricaoChamado'),
                     data_criacao_convertida,
-                    data_finalizacao_convertida,
-                    item.get('ChaveAutoCategoria'),
-                    item.get('HoraFinalizacao'),
-                    item.get('FirstCall'),
-                    item.get('ChaveOperador'),
-                    item.get('ChaveUsuario'),
-                    item.get('ChaveSla'),
-                    item.get('CodInterno')
+                    item.get('HoraAcaoInicio'),
+                    item.get('Protocolo'),
+                    item.get('SequenciaStatus'),
+                    item.get('StatusAcaoNomeRelatorio')
                 ))
                 print("Registro atualizado!")
 
@@ -64,15 +55,12 @@ class callinteracoes:
                 query = "INSERT INTO chamados (CodInterno, CodChamado, DataCriacao, DataFinalizacao, ChaveAutoCategoria, HoraFinalizacao, FirstCall, ChaveOperador, ChaveUsuario, ChaveSla) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cu.execute(query, (
                     item.get('CodInterno'),
-                    item.get('CodChamado'),
+                    item.get('DescricaoChamado'),
                     data_criacao_convertida,
-                    data_finalizacao_convertida,
-                    item.get('ChaveAutoCategoria'),
-                    item.get('HoraFinalizacao'),
-                    item.get('FirstCall'),
-                    item.get('ChaveOperador'),
-                    item.get('ChaveUsuario'),
-                    item.get('ChaveSla')
+                    item.get('HoraAcaoInicio'),
+                    item.get('Protocolo'),
+                    item.get('SequenciaStatus'),
+                    item.get('StatusAcaoNomeRelatorio')
                 ))
                 print("Registro inserido!")
 
