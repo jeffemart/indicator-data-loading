@@ -6,6 +6,7 @@ import logging
 # ...
 from libs import chamados
 from libs import interacoes
+from session import conector
 from dotenv import load_dotenv
 
 # Configuração básica do logger
@@ -19,11 +20,14 @@ logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='a',
 
 # ...
 
+bd_session = conector.database()
+bd_session.mysql()
+
 # deskchamados = chamados.callchamados()
 # deskchamados.priority()
 
-deskinteracoes = interacoes.callinteracoes()
-deskinteracoes.interacoes()
+# deskinteracoes = interacoes.callinteracoes()
+# deskinteracoes.interacoes()
 
 # def Routine():
 #     hora_atual = datetime.datetime.now().time()

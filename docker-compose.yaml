@@ -1,7 +1,6 @@
 version: '3'
 services:
   mysql:
-    container_name: mysql
     image: mysql:latest
     networks:
       breaker:
@@ -13,10 +12,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
+    container_name: mysql
 
   python:
-    container_name: python
     image: python:latest
     networks:
       breaker:
@@ -29,14 +29,13 @@ services:
     working_dir: /app
     command: sh -c "python -m venv /venv && /venv/bin/pip install --upgrade pip && /venv/bin/pip install -r requirements.txt && /venv/bin/python main.py"
     restart: unless-stopped
+    container_name: python
 
   zabbix-server:
-    container_name: zabbix-server
     image: zabbix/zabbix-server-mysql:ubuntu-5.0.1
     networks:
       breaker:
         ipv4_address: 172.30.0.4
-    restart: unless-stopped
     ports:
       - '10051:10051'
     volumes:
@@ -45,9 +44,10 @@ services:
       - .env
     depends_on:
       - mysql
+    restart: unless-stopped
+    container_name: zabbix-server
 
   zabbix-frontend:
-    container_name: zabbix-frontend
     image: zabbix/zabbix-web-apache-mysql:ubuntu-5.0.1
     networks:
       breaker:
@@ -60,10 +60,11 @@ services:
       - .env
     depends_on:
       - mysql
+    restart: unless-stopped
+    container_name: zabbix-frontend
 
   zabbix-agent:
     image: zabbix/zabbix-agent:ubuntu-5.0-latest
-    container_name: zabbix_agent
     networks:
       breaker:
         ipv4_address: 172.30.0.6
@@ -80,10 +81,12 @@ services:
       com.zabbix.company: "Zabbix LLC"
       com.zabbix.component: "zabbix-agentd"
       com.zabbix.os: "ubuntu"
+    restart: unless-stopped
+    container_name: zabbix_agent
+
 
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
     user: 'root'
     environment:
       - GF_INSTALL_PLUGINS=alexanderzobnin-zabbix-app,raintank-worldping-app
@@ -98,15 +101,18 @@ services:
     networks:
       breaker:
         ipv4_address: 172.30.0.7
+    restart: unless-stopped
+    container_name: grafana
 
   redis:
     image: redis:latest
-    container_name: redis
     ports:
       - 6379:6379
     networks:
       breaker:
         ipv4_address: 172.30.0.8
+    restart: unless-stopped
+    container_name: redis
 
   metabase:
     image: metabase/metabase:latest
@@ -115,8 +121,6 @@ services:
         ipv4_address: 172.30.0.9
     ports:
       - 3000:3000
-    env_file:
-      - .env
     depends_on:
       - mysql
     restart: unless-stopped
