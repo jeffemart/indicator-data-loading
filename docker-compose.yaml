@@ -16,6 +16,20 @@ services:
     restart: unless-stopped
     container_name: mysql
 
+  postgres:
+    image: postgres:latest
+    networks:
+      breaker:
+        ipv4_address: 172.30.0.10
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    container_name: postgres
+
   python:
     image: python:latest
     networks:
