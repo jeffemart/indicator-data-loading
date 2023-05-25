@@ -82,3 +82,4 @@ class callchamados:
         # Fecha a conexão com o banco de dados
         cu.close()
         con.close()
+ 
