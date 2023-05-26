@@ -36,7 +36,7 @@ def Routine():
         print("Fora do horário de execução.")
 
 # Agendar a execução do script a cada minuto
-schedule.every().day.at("09:00").do(Routine)
+schedule.every(15).minutes.do(Routine)
 
 # Manter o script em execução
 while True:
