@@ -6,12 +6,12 @@ import os
 from dotenv import load_dotenv
 
 
-class Login_in:
+class login_in:
     def __init__(self):
         self.__token = ''
         self.url = os.getenv('ROUTE_DESK_AUTH')
 
-    def Login(self) -> str:
+    def login(self) -> str:
         # <!--access credentials to authenticate
         load_dotenv()
         header = {'Authorization': os.getenv('AUTHORIZATION'),
@@ -29,5 +29,5 @@ class Login_in:
         else:
             logging.warning("Falha na requisição do token")
 
-    def Get_token(self):
+    def get_token(self):
         return self.__token
