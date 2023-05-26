@@ -25,14 +25,14 @@ def Routine():
     hora_fim = datetime.time(17, 0, 0)
 
     if hora_inicio <= hora_atual <= hora_fim:
-        # Coloque o código que você deseja executar aqui
-        bd = conector.database()
-        bd.mysql()
+        # ...
+        tabela_chamados = chamados.callchamados()
+        tabela_chamados.priority()
     else:
         print("Fora do horário de execução.")
 
 # Agendar a execução do script a cada minuto
-schedule.every().day.at("09:00").do(Routine)
+schedule.every(1).minutes.do(Routine)
 
 # Manter o script em execução
 while True:
