@@ -1,7 +1,7 @@
 import os
 import jwt
 import logging
-import psycopg2
+# import psycopg2
 import mysql.connector
 # ...
 from dotenv import set_key
@@ -55,29 +55,29 @@ class database:
 
         return self.con
     
-    def postgrees(self):
-        try:
-            self.con = psycopg2.connect(
-                dbname=self.postgrees_database, user=self.postgrees_user, password=self.postgrees_password, host=self.postgrees_host, port=self.postgrees_port)
-            logging.info(self.con)
+    # def postgrees(self):
+    #     try:
+    #         self.con = psycopg2.connect(
+    #             dbname=self.postgrees_database, user=self.postgrees_user, password=self.postgrees_password, host=self.postgrees_host, port=self.postgrees_port)
+    #         logging.info(self.con)
 
-            # Criação do token JWT
-            payload = {"username": "example_user", "role": "admin"}  # Informações de acesso do usuário
-            secret_key = "my_secret_key"  # Chave secreta para assinar o token
-            token = jwt.encode(payload, secret_key, algorithm="HS256")
+    #         # Criação do token JWT
+    #         payload = {"username": "example_user", "role": "admin"}  # Informações de acesso do usuário
+    #         secret_key = "my_secret_key"  # Chave secreta para assinar o token
+    #         token = jwt.encode(payload, secret_key, algorithm="HS256")
 
-            logging.info("APP_KEY: " + token)
+    #         logging.info("APP_KEY: " + token)
 
-            # Salvar o token no arquivo .env
-            load_dotenv()
-            set_key('.env', 'APP_KEY', token)
+    #         # Salvar o token no arquivo .env
+    #         load_dotenv()
+    #         set_key('.env', 'APP_KEY', token)
 
-        except psycopg2.Error as error:
-            if error.pgcode == '3D000':
-                logging.error("Database doesn't exist")
-            elif error.pgcode == '28P01':
-                logging.error("User name or password is wrong")
-            else:
-                logging.error(error)
+    #     except psycopg2.Error as error:
+    #         if error.pgcode == '3D000':
+    #             logging.error("Database doesn't exist")
+    #         elif error.pgcode == '28P01':
+    #             logging.error("User name or password is wrong")
+    #         else:
+    #             logging.error(error)
 
-        return self.con
+    #     return self.con
