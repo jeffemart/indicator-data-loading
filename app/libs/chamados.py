@@ -1,25 +1,25 @@
 import json
 import mysql.connector
 # ...
-from libs import Download
-from session import Conector
+from libs import download
+from session import conector
 from datetime import datetime
 
 
-class Calls:
+class callchamados:
     def __init__(self) -> None:
         # <!--constructor to get token and report download
-        info = Download.Data('140')
-        info.Report()
+        info = download.data('140')
+        info.report()
         
         with open('./files/140.json', 'r', encoding='utf_8') as desk:
                     self.relatorio = json.load(desk)
     
-    def Priority(self):
+    def priority(self):
         # Função para inserir ou atualizar os dados no banco de dados
         # ...
-        conc = Conector.Database()
-        con = conc.Mysql()
+        conc = conector.database()
+        con = conc.mysql()
         cu = con.cursor()
 
         # Percorre os dados do JSON
@@ -82,3 +82,4 @@ class Calls:
         # Fecha a conexão com o banco de dados
         cu.close()
         con.close()
+ 
