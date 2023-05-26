@@ -38,7 +38,7 @@ class callinteracoes:
             # Verifica se o item já existe no banco de dados
             if result:
                 # Atualiza a linha existente
-                query = "UPDATE chamados SET CodChamado = %s, DataCriacao = %s, DataFinalizacao = %s, ChaveAutoCategoria = %s, HoraFinalizacao = %s, FirstCall = %s, ChaveOperador = %s, ChaveUsuario = %s, ChaveSla = %s WHERE CodInterno = %s"
+                query = "UPDATE chamados SET CodChamado = %s, DescricaoChamado = %s, DataCriacaoAcao = %s, HoraAcaoInicio = %s, Protocolo = %s, SequenciaStatus = %s, StatusAcaoNomeRelatorio = %s WHERE CodInterno = %s"
                 cu.execute(query, (
                     item.get('CodChamado'),
                     item.get('DescricaoChamado'),
@@ -52,7 +52,7 @@ class callinteracoes:
 
             else:
                 # Insere um novo item
-                query = "INSERT INTO chamados (CodInterno, CodChamado, DataCriacao, DataFinalizacao, ChaveAutoCategoria, HoraFinalizacao, FirstCall, ChaveOperador, ChaveUsuario, ChaveSla) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO chamados (CodInterno, DescricaoChamado, DataCriacaoAcao, HoraAcaoInicio, Protocolo, SequenciaStatus, StatusAcaoNomeRelatorio) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 cu.execute(query, (
                     item.get('CodInterno'),
                     item.get('DescricaoChamado'),
