@@ -25,14 +25,18 @@ def Routine():
     hora_fim = datetime.time(17, 0, 0)
 
     if hora_inicio <= hora_atual <= hora_fim:
-        # ...
+        # Poppulando dados na tabela de chamados
         tabela_chamados = chamados.callchamados()
         tabela_chamados.priority()
+
+        # Poppulando dados na tabela de interações
+        tabela_interacoes = interacoes.callinteracoes()
+        tabela_interacoes.interacoes()
     else:
         print("Fora do horário de execução.")
 
 # Agendar a execução do script a cada minuto
-schedule.every(1).minutes.do(Routine)
+schedule.every().day.at("09:00").do(Routine)
 
 # Manter o script em execução
 while True:
