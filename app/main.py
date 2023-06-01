@@ -21,19 +21,13 @@ logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='a',
 
 # ...
 def Routine():
-    hora_atual = datetime.datetime.now().time()
-    hora_inicio = datetime.time(9, 0, 0)
-    hora_fim = datetime.time(17, 0, 0)
+    # Poppulando dados na tabela de chamados
+    tabela_chamados = chamados.callchamados()
+    tabela_chamados.priority()
 
-    if hora_inicio <= hora_atual <= hora_fim:
-        # # Poppulando dados na tabela de chamados
-        tabela_chamados = chamados.callchamados()
-        tabela_chamados.priority()
-        # # Poppulando dados na tabela de interações
-        tabela_interacoes = interacoes.callinteracoes()
-        tabela_interacoes.interacoes()
-    else:
-        print("Fora do horário de execução.")
+    # Poppulando dados na tabela de interações
+    tabela_interacoes = interacoes.callinteracoes()
+    tabela_interacoes.interacoes()
 
 # Agendar a execução do script a cada minuto
 schedule.every(3).minutes.do(Routine)

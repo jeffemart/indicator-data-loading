@@ -29,7 +29,6 @@ class callinteracoes:
             query = "SELECT * FROM interacoes WHERE CodInterno = %s and HoraAcaoInicio = %s"
             cu.execute(query, (item['CodInterno'], item['HoraAcaoInicio']))
             result = cu.fetchone()
-            logging.info(result)
             
             # # Verifica se o item já existe no banco de dados
             if result:
