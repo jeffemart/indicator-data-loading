@@ -1,4 +1,5 @@
 import json
+import logging
 import mysql.connector
 # ...
 from libs import download
@@ -24,39 +25,23 @@ class callinteracoes:
 
         # Percorre os dados do JSON
         for item in self.relatorio['root']:
-            # Formata a data de Acao (considerando '00-00-0000' como valor nulo)
-            if item['DataCriacaoAcao'] == '00-00-0000':
-                data_criacao_convertida = None
-            else:
-                data_criacao_convertida = datetime.strptime(
-                    item['DataCriacaoAcao'], '%d-%m-%Y').strftime('%Y-%m-%d')
-
-            query = "SELECT * FROM chamados WHERE CodInterno = %s"
-            cu.execute(query, (item['CodInterno'],))
+            # query para verificar se a interação já existe
+            query = "SELECT * FROM interacoes WHERE CodInterno = %s and HoraAcaoInicio = %s"
+            cu.execute(query, (item['CodInterno'], item['HoraAcaoInicio']))
             result = cu.fetchone()
-
-            # Verifica se o item já existe no banco de dados
+            logging.info(result)
+            
+            # # Verifica se o item já existe no banco de dados
             if result:
-                # Atualiza a linha existente
-                query = "UPDATE chamados SET CodChamado = %s, DescricaoChamado = %s, DataCriacaoAcao = %s, HoraAcaoInicio = %s, Protocolo = %s, SequenciaStatus = %s, StatusAcaoNomeRelatorio = %s WHERE CodInterno = %s"
-                cu.execute(query, (
-                    item.get('CodChamado'),
-                    item.get('DescricaoChamado'),
-                    data_criacao_convertida,
-                    item.get('HoraAcaoInicio'),
-                    item.get('Protocolo'),
-                    item.get('SequenciaStatus'),
-                    item.get('StatusAcaoNomeRelatorio')
-                ))
-                print("Registro atualizado!")
+                print("Interação já existe!")
 
             else:
                 # Insere um novo item
-                query = "INSERT INTO chamados (CodInterno, DescricaoChamado, DataCriacaoAcao, HoraAcaoInicio, Protocolo, SequenciaStatus, StatusAcaoNomeRelatorio) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO interacoes (CodInterno, DescricaoChamado, DataCriacaoAcao, HoraAcaoInicio, Protocolo, SequenciaStatus, StatusAcaoNomeRelatorio) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 cu.execute(query, (
                     item.get('CodInterno'),
                     item.get('DescricaoChamado'),
-                    data_criacao_convertida,
+                    item.get('DataCriacaoAcao'),
                     item.get('HoraAcaoInicio'),
                     item.get('Protocolo'),
                     item.get('SequenciaStatus'),
