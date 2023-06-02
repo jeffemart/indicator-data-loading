@@ -44,24 +44,25 @@ class callchamados:
             # Verifica se o item já existe no banco de dados
             if result:
                 # Atualiza a linha existente
-                query = "UPDATE chamados SET CodChamado = %s, DataCriacao = %s, DataFinalizacao = %s, ChaveAutoCategoria = %s, HoraFinalizacao = %s, FirstCall = %s, ChaveOperador = %s, ChaveUsuario = %s, ChaveSla = %s WHERE CodInterno = %s"
+                query = "UPDATE chamados SET CodChamado = %s, DataCriacao = %s, DataFinalizacao = %s, ChaveAutoCategoria = %s, HoraFinalizacao = %s, TotalHorasAberturaFinalizacao = %s, FirstCall = %s, ChaveOperador = %s, ChaveUsuario = %s, ChaveSla = %s WHERE CodInterno = %s"
                 cu.execute(query, (
                     item.get('CodChamado'),
                     data_criacao_convertida,
                     data_finalizacao_convertida,
                     item.get('ChaveAutoCategoria'),
                     item.get('HoraFinalizacao'),
+                    item.get('TotalHorasAberturaFinalizacao'),
                     item.get('FirstCall'),
                     item.get('ChaveOperador'),
                     item.get('ChaveUsuario'),
                     item.get('ChaveSla'),
                     item.get('CodInterno')
                 ))
-                print("Registro atualizado!")
+                print("Chamado atualizado!")
 
             else:
                 # Insere um novo item
-                query = "INSERT INTO chamados (CodInterno, CodChamado, DataCriacao, DataFinalizacao, ChaveAutoCategoria, HoraFinalizacao, FirstCall, ChaveOperador, ChaveUsuario, ChaveSla) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO chamados (CodInterno, CodChamado, DataCriacao, DataFinalizacao, ChaveAutoCategoria, HoraFinalizacao, TotalHorasAberturaFinalizacao, FirstCall, ChaveOperador, ChaveUsuario, ChaveSla) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cu.execute(query, (
                     item.get('CodInterno'),
                     item.get('CodChamado'),
@@ -69,15 +70,16 @@ class callchamados:
                     data_finalizacao_convertida,
                     item.get('ChaveAutoCategoria'),
                     item.get('HoraFinalizacao'),
+                    item.get('TotalHorasAberturaFinalizacao'),
                     item.get('FirstCall'),
                     item.get('ChaveOperador'),
                     item.get('ChaveUsuario'),
                     item.get('ChaveSla')
                 ))
-                print("Registro inserido!")
+                print("Chamado inserido!")
 
-        # Efetua o commit das alterações
-        con.commit()
+            # Efetua o commit das alterações
+            con.commit()
 
         # Fecha a conexão com o banco de dados
         cu.close()

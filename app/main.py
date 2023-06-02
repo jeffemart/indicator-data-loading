@@ -6,6 +6,10 @@ import logging
 # ...
 from libs import chamados
 from libs import interacoes
+from libs import categorias
+from libs import operadores
+from libs import solicitantes
+from libs import sla
 from session import conector
 from datetime import datetime
 from dotenv import load_dotenv
@@ -21,22 +25,32 @@ logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='a',
 
 # ...
 def Routine():
-    hora_atual = datetime.datetime.now().time()
-    hora_inicio = datetime.time(9, 0, 0)
-    hora_fim = datetime.time(17, 0, 0)
+    # Poppulando dados na tabela de chamados
+    tabela_chamados = chamados.callchamados()
+    tabela_chamados.priority()
 
-    if hora_inicio <= hora_atual <= hora_fim:
-        # # Poppulando dados na tabela de chamados
-        tabela_chamados = chamados.callchamados()
-        tabela_chamados.priority()
-        # # Poppulando dados na tabela de interações
-        tabela_interacoes = interacoes.callinteracoes()
-        tabela_interacoes.interacoes()
-    else:
-        print("Fora do horário de execução.")
+    # Poppulando dados na tabela de interações
+    tabela_interacoes = interacoes.callinteracoes()
+    tabela_interacoes.interacoes()
+
+    # Poppulando dados na tabela de operadores
+    tabela_operadores = operadores.calloperadores()
+    tabela_operadores.operadores()
+
+    # Poppulando dados na tabela de categorias
+    tabela_categorias = categorias.callcategorias()
+    tabela_categorias.categorias()
+
+    # Poppulando dados na tabela de solicitantes
+    tabela_solicitantes = solicitantes.callsolicitantes()
+    tabela_solicitantes.solicitantes()
+
+    # Poppulando dados na tabela de sla
+    tabela_sla = sla.callsla()
+    tabela_sla.sla()
 
 # Agendar a execução do script a cada minuto
-schedule.every(3).minutes.do(Routine)
+schedule.every(5).minutes.do(Routine)
 
 # Manter o script em execução
 while True:
