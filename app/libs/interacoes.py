@@ -27,7 +27,7 @@ class callinteracoes:
         for item in self.relatorio['root']:
             # query para verificar se a interação já existe
             query = "SELECT * FROM interacoes WHERE CodInterno = %s and HoraAcaoInicio = %s"
-            cu.execute(query, (item['CodInterno'], item['HoraAcaoInicio']))
+            cu.execute(query, (item.get('CodInterno'), item.get('HoraAcaoInicio')))
             result = cu.fetchone()
             
             # # Verifica se o item já existe no banco de dados
@@ -46,7 +46,7 @@ class callinteracoes:
                     item.get('SequenciaStatus'),
                     item.get('StatusAcaoNomeRelatorio')
                 ))
-                print("Registro inserido!")
+                print("Interação inserido!")
 
         # Efetua o commit das alterações
         con.commit()

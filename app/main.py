@@ -6,6 +6,10 @@ import logging
 # ...
 from libs import chamados
 from libs import interacoes
+from libs import categorias
+from libs import operadores
+from libs import solicitantes
+from libs import sla
 from session import conector
 from datetime import datetime
 from dotenv import load_dotenv
@@ -29,8 +33,24 @@ def Routine():
     tabela_interacoes = interacoes.callinteracoes()
     tabela_interacoes.interacoes()
 
+    # Poppulando dados na tabela de operadores
+    tabela_operadores = operadores.calloperadores()
+    tabela_operadores.operadores()
+
+    # Poppulando dados na tabela de categorias
+    tabela_categorias = categorias.callcategorias()
+    tabela_categorias.categorias()
+
+    # Poppulando dados na tabela de solicitantes
+    tabela_solicitantes = solicitantes.callsolicitantes()
+    tabela_solicitantes.solicitantes()
+
+    # Poppulando dados na tabela de sla
+    tabela_sla = sla.callsla()
+    tabela_sla.sla()
+
 # Agendar a execução do script a cada minuto
-schedule.every(3).minutes.do(Routine)
+schedule.every(5).minutes.do(Routine)
 
 # Manter o script em execução
 while True:

@@ -58,7 +58,7 @@ class callchamados:
                     item.get('ChaveSla'),
                     item.get('CodInterno')
                 ))
-                print("Registro atualizado!")
+                print("Chamado atualizado!")
 
             else:
                 # Insere um novo item
@@ -76,7 +76,7 @@ class callchamados:
                     item.get('ChaveUsuario'),
                     item.get('ChaveSla')
                 ))
-                print("Registro inserido!")
+                print("Chamado inserido!")
 
             # Efetua o commit das alterações
             con.commit()
