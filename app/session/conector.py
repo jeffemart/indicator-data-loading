@@ -17,8 +17,8 @@ class database:
 
         # Acessa as variáveis de ambiente carregadas - Mysql
         self.mysql_host = os.getenv("MYSQL_HOST")
-        self.mysql_user = os.getenv("MYSQL_USER")
-        self.mysql_password = os.getenv("MYSQL_PASSWORD")
+        self.mysql_user = os.getenv("MYSQL_ROOT_USER")
+        self.mysql_password = os.getenv("MYSQL_ROOT_PASSWORD")
         self.mysql_database = os.getenv("MYSQL_DATABASE")
 
         # Acessa as variáveis de ambiente carregadas - Postgrees
