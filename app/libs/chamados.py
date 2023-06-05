@@ -10,8 +10,8 @@ from datetime import datetime, timedelta
 class callchamados:
     def __init__(self) -> None:
         # <!--constructor to get token and report download
-        # info = download.data('140')
-        # info.report()
+        info = download.data('140')
+        info.report()
         
         with open('./files/140.json', 'r', encoding='utf_8') as desk:
                     self.relatorio = json.load(desk)
@@ -41,31 +41,48 @@ class callchamados:
 
             if item['TotalHorasAberturaFinalizacao']:
                 duracao_parts = item['TotalHorasAberturaFinalizacao'].split(':')
-                horas = int(duracao_parts[0])
-                minutos = int(duracao_parts[1])
-                segundos = int(duracao_parts[2])
+                if len(duracao_parts) == 3:
+                    horas = int(duracao_parts[0])
+                    minutos = int(duracao_parts[1])
+                    segundos = int(duracao_parts[2])
 
-                total_segundos = (horas * 3600) + (minutos * 60) + segundos
+                    # Calcular o total de segundos
+                    total_segundos = (horas * 3600) + (minutos * 60) + segundos
 
-                total_horas_abertura_finalizacao_convertido = total_segundos
+                    total_horas_abertura_finalizacao_convertido = total_segundos
+                else:
+                    # O formato da duração é inválido
+                    total_horas_abertura_finalizacao_convertido = None
+            else:
+                total_horas_abertura_finalizacao_convertido = None
 
             query = "SELECT * FROM chamados WHERE CodInterno = %s"
             cu.execute(query, (item['CodInterno'],))
             result = cu.fetchone()
 
             if result:
-                should_update = (
-                    result[1] != item.get('CodChamado') or
-                    result[2] != data_criacao_convertida or
-                    result[3] != data_finalizacao_convertida or
-                    result[4] != item.get('ChaveAutoCategoria') or
-                    result[5] != item.get('HoraFinalizacao') or
-                    result[6] != total_horas_abertura_finalizacao_convertido or
-                    result[7] != item.get('FirstCall') or
-                    result[8] != item.get('ChaveOperador') or
-                    result[9] != item.get('ChaveUsuario') or
-                    result[10] != item.get('ChaveSla')
-                )
+                should_update = False
+
+                if result[1] != item.get('CodChamado'):
+                    should_update = True
+                elif result[2] != data_criacao_convertida:
+                    should_update = True
+                elif result[3] != data_finalizacao_convertida:
+                    should_update = True
+                elif result[4] != item.get('ChaveAutoCategoria'):
+                    should_update = True
+                elif result[5] != item.get('HoraFinalizacao'):
+                    should_update = True
+                elif result[6] != total_horas_abertura_finalizacao_convertido:
+                    should_update = True
+                elif result[7] != item.get('FirstCall'):
+                    should_update = True
+                elif result[8] != item.get('ChaveOperador'):
+                    should_update = True
+                elif result[9] != item.get('ChaveUsuario'):
+                    should_update = True
+                elif result[10] != item.get('ChaveSla'):
+                    should_update = True
 
                 if should_update:
                     query = """
@@ -135,4 +152,3 @@ class callchamados:
 
         cu.close()
         con.close()
- 

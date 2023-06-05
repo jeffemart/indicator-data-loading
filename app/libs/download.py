@@ -2,20 +2,22 @@ import requests
 import logging
 import json
 import os
-# ...
 from auth import autentication
 from dotenv import load_dotenv
 
 
 class data:
     def __init__(self, cod=['']):
-        call_class = autentication.login_in()
-        call_class.login()
-        self.__token = call_class.get_token()
-        print(self.__token)
-        load_dotenv()
-        
+        load_dotenv()  # Carrega as variáveis de ambiente do arquivo .env
         self.url_data = os.getenv('ROUTE_DOWNLOAD')
+        self.__token = os.getenv('APP_TOKEN')
+
+        if not self.__token:  # Verifica se o token está vazio
+            call_class = autentication.login_in()
+            call_class.login()
+            self.__token = call_class.get_token()
+            print(self.__token)
+
         self.header = {'Authorization': f'{self.__token}'}
         self.cod = cod
 
