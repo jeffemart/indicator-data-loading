@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import mysql.connector
@@ -15,12 +16,16 @@ class callsla:
         
         with open('./files/142.json', 'r', encoding='utf_8') as desk:
             self.relatorio = json.load(desk)
+
+        # Carrega o token da variável de ambiente APP_KEY
+        self.token = os.getenv("APP_KEY")
+
+        # Cria uma instância da classe database
+        self.db = conector.database(self.token)
     
     def sla(self):
         # Função para inserir ou atualizar os dados no banco de dados
-        # ...
-        conc = conector.database()
-        con = conc.mysql()
+        con = self.db.mysql()
         cu = con.cursor()
 
         # Percorre os dados do JSON
