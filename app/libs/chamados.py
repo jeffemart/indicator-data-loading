@@ -69,7 +69,7 @@ class callchamados:
                     should_update = True
                 elif result[3] != data_finalizacao_convertida:
                     should_update = True
-                elif result[4] != item.get('ChaveAutoCategoria'):
+                elif result[4] != item.get('SequenciaCategoria'):
                     should_update = True
                 elif result[5] != item.get('HoraFinalizacao'):
                     should_update = True
@@ -90,7 +90,7 @@ class callchamados:
                         CodChamado = %s,
                         DataCriacao = %s,
                         DataFinalizacao = %s,
-                        ChaveAutoCategoria = %s,
+                        SequenciaCategoria = %s,
                         HoraFinalizacao = %s,
                         TotalHorasAberturaFinalizacao = %s,
                         FirstCall = %s,
@@ -103,7 +103,7 @@ class callchamados:
                         item.get('CodChamado'),
                         data_criacao_convertida,
                         data_finalizacao_convertida,
-                        item.get('ChaveAutoCategoria'),
+                        item.get('SequenciaCategoria'),
                         item.get('HoraFinalizacao'),
                         total_horas_abertura_finalizacao_convertido,
                         item.get('FirstCall'),
@@ -122,7 +122,7 @@ class callchamados:
                         CodChamado,
                         DataCriacao,
                         DataFinalizacao,
-                        ChaveAutoCategoria,
+                        SequenciaCategoria,
                         HoraFinalizacao,
                         TotalHorasAberturaFinalizacao,
                         FirstCall,
@@ -138,7 +138,7 @@ class callchamados:
                     item.get('CodChamado'),
                     data_criacao_convertida,
                     data_finalizacao_convertida,
-                    item.get('ChaveAutoCategoria'),
+                    item.get('SequenciaCategoria'),
                     item.get('HoraFinalizacao'),
                     total_horas_abertura_finalizacao_convertido,
                     item.get('FirstCall'),
