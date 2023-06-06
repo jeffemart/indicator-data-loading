@@ -23,40 +23,36 @@ log_file = os.path.join(log_folder, "file.log")
 logging.basicConfig(level=logging.DEBUG, filename=log_file, filemode='a',
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-# # ...
-# def Routine():
-#     # Poppulando dados na tabela de chamados
-#     tabela_chamados = chamados.callchamados()
-#     tabela_chamados.priority()
+# ...
+def Routine():
+    # Poppulando dados na tabela de chamados
+    tabela_chamados = chamados.callchamados()
+    tabela_chamados.priority()
 
-#     # Poppulando dados na tabela de interações
-#     tabela_interacoes = interacoes.callinteracoes()
-#     tabela_interacoes.interacoes()
+    # Poppulando dados na tabela de interações
+    tabela_interacoes = interacoes.callinteracoes()
+    tabela_interacoes.interacoes()
 
-#     # Poppulando dados na tabela de operadores
-#     tabela_operadores = operadores.calloperadores()
-#     tabela_operadores.operadores()
+    # Poppulando dados na tabela de operadores
+    tabela_operadores = operadores.calloperadores()
+    tabela_operadores.operadores()
 
-#     # Poppulando dados na tabela de categorias
-#     tabela_categorias = categorias.callcategorias()
-#     tabela_categorias.categorias()
+    # Poppulando dados na tabela de categorias
+    tabela_categorias = categorias.callcategorias()
+    tabela_categorias.categorias()
 
-#     # Poppulando dados na tabela de solicitantes
-#     tabela_solicitantes = solicitantes.callsolicitantes()
-#     tabela_solicitantes.solicitantes()
+    # Poppulando dados na tabela de solicitantes
+    tabela_solicitantes = solicitantes.callsolicitantes()
+    tabela_solicitantes.solicitantes()
 
-#     # Poppulando dados na tabela de sla
-#     tabela_sla = sla.callsla()
-#     tabela_sla.sla()
+    # Poppulando dados na tabela de sla
+    tabela_sla = sla.callsla()
+    tabela_sla.sla()
 
-# # Agendar a execução do script uma vez por dia às 11 horas da manhã
-# schedule.every().day.at("11:00").do(Routine)
+# Agendar a execução do script uma vez por dia às 11 horas da manhã
+schedule.every().day.at("11:00").do(Routine)
 
-# # Manter o script em execução
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1) 
-
-
-tabela_chamados = chamados.callchamados()
-tabela_chamados.priority()
+# Manter o script em execução
+while True:
+    schedule.run_pending()
+    time.sleep(1) 
