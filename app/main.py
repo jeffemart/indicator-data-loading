@@ -50,7 +50,7 @@ def Routine():
     tabela_sla.sla()
 
 # Agendar a execução do script uma vez por dia às 11 horas da manhã
-schedule.every().day.at("11:00").do(Routine)
+schedule.every().day.at("12:00").do(Routine)
 
 # Manter o script em execução
 while True:

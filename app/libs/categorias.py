@@ -25,13 +25,13 @@ class callcategorias:
     
     def categorias(self):
         # Função para inserir ou atualizar os dados no banco de dados
-        con = self.db.mysql()
+        con = self.db.postgres()
         cu = con.cursor()
 
         # Percorre os dados do JSON
         for item in self.relatorio['root']:
             # query para verificar se a categoria já existe
-            query = "SELECT * FROM categorias WHERE SequenciaCategoria = %s"
+            query = "SELECT * FROM deskmanager.categorias WHERE SequenciaCategoria = %s"
             cu.execute(query, (item.get('SequenciaCategoria'),))
             result = cu.fetchone()
 
@@ -40,7 +40,7 @@ class callcategorias:
                 print("Categoria já existe!")
             else:
                 # Insere um novo item
-                query = "INSERT INTO categorias (GrupoAutoCategoriaSequencia, GrupoAutoCategoriaNome, SequenciaSubCategoria, NomeSubCategoria, SequenciaCategoria, NomeCategoria) VALUES (%s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO deskmanager.categorias (GrupoAutoCategoriaSequencia, GrupoAutoCategoriaNome, SequenciaSubCategoria, NomeSubCategoria, SequenciaCategoria, NomeCategoria) VALUES (%s, %s, %s, %s, %s, %s)"
                 values = (
                     item.get('GrupoAutoCategoriaSequencia'),
                     item.get('GrupoAutoCategoriaNome'),

@@ -25,13 +25,13 @@ class callsla:
     
     def sla(self):
         # Função para inserir ou atualizar os dados no banco de dados
-        con = self.db.mysql()
+        con = self.db.postgres()
         cu = con.cursor()
 
         # Percorre os dados do JSON
         for item in self.relatorio['root']:
             # query para verificar se a interação já existe
-            query = "SELECT * FROM sla WHERE ChaveSla = %s"
+            query = "SELECT * FROM deskmanager.sla WHERE ChaveSla = %s"
             cu.execute(query, (item.get('ChaveSla'), ))
             result = cu.fetchone()
             
@@ -40,7 +40,7 @@ class callsla:
                 print("SLA já existe!")
             else:
                 # Insere um novo item
-                query = "INSERT INTO sla (ChaveSla, NomeSla, SlaInterno, SlaContratual, TotalHorasAberturaFinalizacao, TotalHorasAberturaSegundoAtendimento, ChaveSlaStatusAtual, NomeSlaStatusAtual, NomeSla2Status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO deskmanager.sla (ChaveSla, NomeSla, SlaInterno, SlaContratual, TotalHorasAberturaFinalizacao, TotalHorasAberturaSegundoAtendimento, ChaveSlaStatusAtual, NomeSlaStatusAtual, NomeSla2Status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 values = (
                     item.get('ChaveSla'),
                     item.get('NomeSla'),

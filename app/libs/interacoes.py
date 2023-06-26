@@ -25,13 +25,13 @@ class callinteracoes:
 
     def interacoes(self):
         # Função para inserir ou atualizar os dados no banco de dados
-        con = self.db.mysql()
+        con = self.db.postgres()
         cu = con.cursor()
 
         # Percorre os dados do JSON
         for item in self.relatorio['root']:
             # query para verificar se a interação já existe
-            query = "SELECT * FROM interacoes WHERE CodInterno = %s and HoraAcaoInicio = %s"
+            query = "SELECT * FROM deskmanager.interacoes WHERE CodInterno = %s and HoraAcaoInicio = %s"
             cu.execute(query, (item.get('CodInterno'), item.get('HoraAcaoInicio')))
             result = cu.fetchone()
             
@@ -41,7 +41,7 @@ class callinteracoes:
 
             else:
                 # Insere um novo item
-                query = "INSERT INTO interacoes (CodInterno, DescricaoChamado, DataCriacaoAcao, HoraAcaoInicio, Protocolo, SequenciaStatus, StatusAcaoNomeRelatorio) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO deskmanager.interacoes (CodInterno, DescricaoChamado, DataCriacaoAcao, HoraAcaoInicio, Protocolo, SequenciaStatus, StatusAcaoNomeRelatorio) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 cu.execute(query, (
                     item.get('CodInterno'),
                     item.get('DescricaoChamado'),

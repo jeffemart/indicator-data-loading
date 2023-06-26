@@ -25,13 +25,13 @@ class callsolicitantes:
     
     def solicitantes(self):
         # Função para inserir ou atualizar os dados no banco de dados
-        con = self.db.mysql()
+        con = self.db.postgres()
         cu = con.cursor()
 
         # Percorre os dados do JSON
         for item in self.relatorio['root']:
             # query para verificar se o usuário já existe
-            query = "SELECT * FROM solicitantes WHERE ChaveUsuario = %s"
+            query = "SELECT * FROM deskmanager.solicitantes WHERE ChaveUsuario = %s"
             cu.execute(query, (item.get('ChaveUsuario'),))
             result = cu.fetchone()
 
@@ -40,7 +40,7 @@ class callsolicitantes:
                 print("Solicitante já existe!")
             else:
                 # Insere um novo item
-                query = "INSERT INTO solicitantes (ChaveUsuario, NomeUsuario, SobrenomeUsuario, Vip, SequenciaDepartamento, NomeDepartamento, SequenciaLocal, NomeLocal, SolicitanteEmail, EnderecoSolicitante, UfSolicitante, CepSolicitante) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO deskmanager.solicitantes (ChaveUsuario, NomeUsuario, SobrenomeUsuario, Vip, SequenciaDepartamento, NomeDepartamento, SequenciaLocal, NomeLocal, SolicitanteEmail, EnderecoSolicitante, UfSolicitante, CepSolicitante) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 values = (
                     item.get('ChaveUsuario'),
                     item.get('NomeUsuario'),

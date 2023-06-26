@@ -23,7 +23,7 @@ class callchamados:
         self.db = conector.database(self.token)
     
     def priority(self):
-        con = self.db.mysql()
+        con = self.db.postgres()
         cu = con.cursor()
 
         for item in self.relatorio['root']:
@@ -38,6 +38,10 @@ class callchamados:
             if item['DataFinalizacao'] != '00-00-0000':
                 data_finalizacao_convertida = datetime.strptime(
                     item['DataFinalizacao'], '%d-%m-%Y').strftime('%Y-%m-%d')
+            
+            if item['HoraFinalizacao'] == "":
+                item['HoraFinalizacao'] = "00:00:00"
+
 
             if item['TotalHorasAberturaFinalizacao']:
                 duracao_parts = item['TotalHorasAberturaFinalizacao'].split(':')
@@ -56,7 +60,7 @@ class callchamados:
             else:
                 total_horas_abertura_finalizacao_convertido = None
 
-            query = "SELECT * FROM chamados WHERE CodInterno = %s"
+            query = "SELECT * FROM deskmanager.chamados WHERE CodInterno = %s"
             cu.execute(query, (item['CodInterno'],))
             result = cu.fetchone()
 
@@ -86,7 +90,7 @@ class callchamados:
 
                 if should_update:
                     query = """
-                        UPDATE chamados SET
+                        UPDATE deskmanager.chamados SET
                         CodChamado = %s,
                         DataCriacao = %s,
                         DataFinalizacao = %s,
@@ -117,7 +121,7 @@ class callchamados:
                     print("Chamado não precisa ser atualizado.")
             else:
                 query = """
-                    INSERT INTO chamados (
+                    INSERT INTO deskmanager.chamados (
                         CodInterno,
                         CodChamado,
                         DataCriacao,
