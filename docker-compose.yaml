@@ -1,21 +1,5 @@
 version: '3'
 services:
-  mysql:
-    image: mysql:latest
-    networks:
-      breaker:
-        ipv4_address: 172.30.0.2
-    ports:
-      - 3036:3036
-    env_file:
-      - .env
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: unless-stopped
-    container_name: mysql
-
   python:
     image: python:latest
     networks:
@@ -30,25 +14,6 @@ services:
     command: sh -c "python -m venv /venv && /venv/bin/pip install --upgrade pip && /venv/bin/pip install -r requirements.txt && /venv/bin/python main.py"
     restart: unless-stopped
     container_name: python
-
-  metabase:
-    image: metabase/metabase:latest
-    networks:
-      breaker:
-        ipv4_address: 172.30.0.9
-    ports:
-      - 3000:3000
-    depends_on:
-      - mysql
-    restart: unless-stopped
-    container_name: meatabase
-
-volumes:
-  mysql_data:
-  postgres_data:
-  grafana-config:
-  grafana-data:
-  grafana-home:
 
 networks:
   breaker:
