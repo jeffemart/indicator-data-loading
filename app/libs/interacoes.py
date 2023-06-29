@@ -24,7 +24,6 @@ class callinteracoes:
         self.db = conector.database(self.token)
 
     def interacoes(self):
-        def interacoes(self):
         # Função para inserir ou atualizar os dados no banco de dados
         con = self.db.postgres()
         cu = con.cursor()
