@@ -13,7 +13,7 @@ class callsla:
         # <!--constructor to get token and report download
         info = download.data('142')
         info.report()
-        
+ 
         with open('./files/142.json', 'r', encoding='utf_8') as desk:
             self.relatorio = json.load(desk)
 

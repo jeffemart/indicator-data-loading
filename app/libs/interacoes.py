@@ -24,6 +24,7 @@ class callinteracoes:
         self.db = conector.database(self.token)
 
     def interacoes(self):
+        def interacoes(self):
         # Função para inserir ou atualizar os dados no banco de dados
         con = self.db.postgres()
         cu = con.cursor()
@@ -35,23 +36,27 @@ class callinteracoes:
             cu.execute(query, (item.get('CodInterno'), item.get('HoraAcaoInicio')))
             result = cu.fetchone()
             
-            # # Verifica se o item já existe no banco de dados
+            # Verifica se o item já existe no banco de dados
             if result:
                 print("Interação já existe!")
-
             else:
                 # Insere um novo item
-                query = "INSERT INTO deskmanager.interacoes (CodInterno, DescricaoChamado, DataCriacaoAcao, HoraAcaoInicio, Protocolo, SequenciaStatus, StatusAcaoNomeRelatorio) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                query = "INSERT INTO deskmanager.interacoes (CodInterno, NChamado, OperadorAcaoNomeCRelatorio, FantasiaClienteChamado, DataCriacaoAcao, HoraAcaoInicio, HoraAcaoFim, TotalHoras, NomeFormaAtendimento, DescricaoChamado, AssuntoChamado, Descricao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 cu.execute(query, (
                     item.get('CodInterno'),
-                    item.get('DescricaoChamado'),
+                    item.get('NChamado'),
+                    item.get('OperadorAcaoNomeCRelatorio'),
+                    item.get('FantasiaClienteChamado'),
                     item.get('DataCriacaoAcao'),
                     item.get('HoraAcaoInicio'),
-                    item.get('Protocolo'),
-                    item.get('SequenciaStatus'),
-                    item.get('StatusAcaoNomeRelatorio')
+                    item.get('HoraAcaoFim'),
+                    item.get('TotalHoras'),
+                    item.get('NomeFormaAtendimento'),
+                    item.get('DescricaoChamado'),
+                    item.get('AssuntoChamado'),
+                    item.get('Descricao')
                 ))
-                print("Interação inserido!")
+                print("Interação inserida!")
 
         # Efetua o commit das alterações
         con.commit()
